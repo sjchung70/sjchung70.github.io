@@ -137,11 +137,31 @@ p {
 }
 
 h1 {
-  font-size: clamp(3.8rem, 8vw, 6.8rem);
+  font-size: 0;
   line-height: 0.96;
   font-weight: 700;
   letter-spacing: -0.05em;
   margin: 0.25rem 0 1rem;
+}
+
+h1::before {
+  content: "CHUNG\A Seung Jae";
+  white-space: pre-line;
+  display: block;
+  font-size: clamp(3.8rem, 8vw, 6.8rem);
+  line-height: 0.96;
+  letter-spacing: -0.05em;
+}
+
+h1::after {
+  content: "정승재  ·  鄭丞宰";
+  display: block;
+  margin-top: 1.15rem;
+  font-family: "Apple SD Gothic Neo", "Noto Sans KR", "Noto Sans CJK KR", "Malgun Gothic", sans-serif;
+  font-size: clamp(1rem, 1.55vw, 1.28rem);
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  color: var(--muted);
 }
 
 .hero-subtitle {
@@ -154,6 +174,24 @@ h1 {
 .section-content p {
   font-size: 1.03rem;
   max-width: 60ch;
+}
+
+.hero-text {
+  font-size: 0;
+}
+
+.hero-text::before {
+  content: "Korean composer CHUNG Seung Jae creates music at the intersection of tradition and the present, reimagining familiar materials through repetition, transformation, and renewed listening.";
+  font-size: 1.03rem;
+}
+
+.about .lead {
+  font-size: 0;
+}
+
+.about .lead::before {
+  content: "CHUNG Seung Jae is a Korean composer whose music explores the meeting point of tradition and contemporary expression. Repetition and transformation form a central part of his musical language, allowing familiar materials to acquire new identities through time.";
+  font-size: 1.03rem;
 }
 
 .hero-actions {
@@ -258,6 +296,15 @@ h2 {
   color: var(--muted);
 }
 
+.site-footer p {
+  font-size: 0;
+}
+
+.site-footer p::before {
+  content: "© 2026 CHUNG Seung Jae · 정승재 · 鄭丞宰";
+  font-size: 0.92rem;
+}
+
 @media (max-width: 900px) {
   .hero {
     min-height: auto;
@@ -297,13 +344,17 @@ h2 {
     flex-wrap: wrap;
   }
 
-  h1 {
+  h1::before {
     font-size: clamp(3rem, 14vw, 4.4rem);
   }
 
+  h1::after {
+    font-size: 1rem;
+  }
+
   .hero-subtitle,
-  .hero-text,
-  .lead,
+  .hero-text::before,
+  .about .lead::before,
   .section-content p,
   .work-row p,
   .work-row h3 {
