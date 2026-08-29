@@ -22,7 +22,7 @@ h1{margin:.25rem 0 .6rem;font-size:clamp(3.5rem,7vw,6.5rem);line-height:.94;lett
 h2{font-size:clamp(2rem,4.8vw,3.6rem);line-height:1.05;letter-spacing:-.04em;margin-bottom:1.2rem}
 .about .section-content{width:100%}
 .about-short{width:100%;max-width:none}
-.about-short p{font-size:1.34rem;line-height:1.72;max-width:none;margin-bottom:1.35rem;white-space:normal;word-break:normal;overflow-wrap:normal;hyphens:none}
+.about-short p{font-size:1.34rem;line-height:1.72;max-width:none;margin-bottom:1.35rem;white-space:normal;word-break:normal;overflow-wrap:normal;hyphens:none;text-align:justify;text-justify:inter-word}
 .about-short p:first-child{width:100%;max-width:none}
 .about-short strong,.biography-full strong{font-weight:600}
 .biography-details{width:100%;max-width:none;margin-top:2rem;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
@@ -31,7 +31,7 @@ h2{font-size:clamp(2rem,4.8vw,3.6rem);line-height:1.05;letter-spacing:-.04em;mar
 .biography-details summary span{font-size:1.45rem;font-weight:300;line-height:1;transition:transform .2s ease}
 .biography-details[open] summary span{transform:rotate(45deg)}
 .biography-full{padding:.55rem 0 1.3rem}
-.biography-full p{font-size:1.2rem;line-height:1.76;max-width:none;margin-bottom:1.25rem;white-space:normal;word-break:normal;overflow-wrap:normal;hyphens:none}
+.biography-full p{font-size:1.2rem;line-height:1.76;max-width:none;margin-bottom:1.25rem;white-space:normal;word-break:normal;overflow-wrap:normal;hyphens:none;text-align:justify;text-justify:inter-word}
 .biography-full p:last-child{margin-bottom:0}
 .works-list{margin-top:1.6rem;border-top:1px solid var(--line)}.work-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:1rem;align-items:end;padding:1.1rem 0;border-bottom:1px solid var(--line)}.work-row h3{margin:.25rem 0 0;font-size:1.18rem}.work-row p{margin:0;color:var(--muted)}
 .site-footer{width:min(100%,var(--max));margin:auto;padding:1.2rem 4.5vw 3rem;display:flex;justify-content:space-between;gap:1rem;color:var(--muted);font-size:.92rem}
