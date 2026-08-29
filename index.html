@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Official website of composer CHUNG Seung Jae.">
   <title>CHUNG Seung Jae | Composer</title>
-  <link rel="stylesheet" href="css/style.css?v=20260829-2">
+  <link rel="stylesheet" href="css/style.css?v=20260830-1">
 </head>
 <body>
   <header class="site-header">
@@ -74,27 +74,42 @@
 
     <section id="works" class="section works">
       <p class="section-number">02</p>
-      <div class="section-content">
-        <p class="section-label">Selected Works</p>
-        <div class="works-list">
-          <article class="work-row">
-            <div><span class="year">2026</span><h3>Behind the Hill, the Pasqueflower</h3></div>
-            <p>Solo Violin</p>
-          </article>
-          <article class="work-row">
-            <div><span class="year">2026</span><h3>Dialogue</h3></div>
-            <p>Solo Bass Clarinet</p>
-          </article>
-          <article class="work-row">
-            <div><span class="year">2024</span><h3>Elegy for Strings</h3></div>
-            <p>String Orchestra</p>
-          </article>
-          <article class="work-row">
-            <div><span class="year">—</span><h3>The Wells of Silence</h3></div>
-            <p>Piano Quintet</p>
-          </article>
+      <div class="section-content works-content">
+        <p class="section-label">Works</p>
+        <h2>Catalogue</h2>
+        <p class="works-intro">Browse the catalogue by genre or year. You can also filter by instrumentation—for example, choose <strong>Solo + Piano</strong> for piano solo works, or <strong>Chamber + Viola</strong> for chamber works that include viola.</p>
+
+        <div class="works-toolbar" aria-label="Works catalogue controls">
+          <div class="works-control works-view-control">
+            <span class="control-label">View by</span>
+            <div class="segmented-control">
+              <button type="button" class="is-active" data-works-view="genre">Genre</button>
+              <button type="button" data-works-view="year">Year</button>
+            </div>
+          </div>
+
+          <label class="works-control">
+            <span class="control-label">Genre</span>
+            <select id="genreFilter">
+              <option value="All">All genres</option>
+            </select>
+          </label>
+
+          <label class="works-control">
+            <span class="control-label">Instrument</span>
+            <select id="instrumentFilter">
+              <option value="All">All instruments</option>
+            </select>
+          </label>
+
+          <label class="works-control works-search-control">
+            <span class="control-label">Search</span>
+            <input id="worksSearch" type="search" placeholder="Title, instrument, ensemble…" autocomplete="off">
+          </label>
         </div>
-        <p class="muted">The complete catalogue, scores, program notes, and recordings will be added next.</p>
+
+        <div class="works-status"><span id="worksCount">Loading works…</span></div>
+        <div id="worksCatalogue" class="works-catalogue" aria-live="polite"></div>
       </div>
     </section>
 
@@ -125,5 +140,6 @@
   <script>
     document.getElementById('year').textContent = new Date().getFullYear();
   </script>
+  <script src="js/works.js?v=20260830-1" defer></script>
 </body>
 </html>
