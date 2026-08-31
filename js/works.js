@@ -4,6 +4,7 @@
     ['Bass Clarinet', /bass clarinet/i], ['Clarinet', /clarinet/i], ['Bassoon', /bassoon/i],
     ['Flute', /flute/i], ['Oboe', /oboe/i], ['Horn', /horn/i], ['Trumpet', /trumpet/i],
     ['Trombone', /trombone/i], ['Tuba', /tuba/i], ['Percussion', /percussion/i],
+    ['Triangle', /triangle/i], ['Tambourine', /tambourine/i],
     ['Piano', /piano/i], ['Harpsichord', /harpsichord/i], ['Harp', /harp/i], ['Guitar', /guitar/i],
     ['Violin', /violin/i], ['Viola', /viola/i], ['Cello', /violoncello|cello/i], ['Double Bass', /double bass/i],
     ['Sheng', /sheng/i], ['Guzheng', /guzheng/i], ['Gayageum', /gayageum/i], ['Danso', /danso/i],
@@ -42,7 +43,7 @@
     instrumentRules.forEach(([name, rule]) => {
       if (rule.test(text) && !found.includes(name)) found.push(name);
     });
-    if (/string orchestra/i.test(text)) {
+    if (/\bstrings\b|string orchestra|string ensemble/i.test(text)) {
       ['Violin', 'Viola', 'Cello', 'Double Bass'].forEach(name => {
         if (!found.includes(name)) found.push(name);
       });
@@ -72,13 +73,33 @@
     return [...works].sort((a, b) => (b.year || 0) - (a.year || 0) || a.title.localeCompare(b.title));
   }
 
+  function safeURL(value = '') {
+    if (!value) return '';
+    try {
+      const url = new URL(value, window.location.href);
+      return /^https?:$/.test(url.protocol) ? url.href : '';
+    } catch {
+      return '';
+    }
+  }
+
   function workMarkup(work) {
-    const meta = [work.instrumentation, work.commission ? `Commission: ${work.commission}` : ''].filter(Boolean);
+    const meta = [
+      work.instrumentation,
+      work.duration ? `Duration: ${work.duration}` : '',
+      work.commission ? `Commission: ${work.commission}` : ''
+    ].filter(Boolean).map(escapeHTML);
+
+    const url = safeURL(work.url);
+    if (url) {
+      meta.push(`<a href="${escapeHTML(url)}" target="_blank" rel="noopener noreferrer">Video ↗</a>`);
+    }
+
     return `<article class="catalogue-row">
       <div class="catalogue-year">${work.year || '—'}</div>
       <div class="catalogue-main">
         <h4>${escapeHTML(work.title)}</h4>
-        ${meta.length ? `<p>${meta.map(escapeHTML).join(' · ')}</p>` : ''}
+        ${meta.length ? `<p>${meta.join(' · ')}</p>` : ''}
       </div>
       <div class="catalogue-genre">${escapeHTML(work.genre)}</div>
     </article>`;
@@ -127,7 +148,7 @@
     render();
   }));
 
-  fetch('data/works.tsv?v=20260830-1')
+  fetch('data/works.tsv?v=20260831-1')
     .then(r => { if (!r.ok) throw new Error('Catalogue data could not be loaded.'); return r.text(); })
     .then(text => {
       state.works = parseTSV(text);
