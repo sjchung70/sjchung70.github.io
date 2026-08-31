@@ -148,7 +148,7 @@
     render();
   }));
 
-  fetch('data/works.tsv?v=20260831-1')
+  fetch('data/works.tsv?v=20260831-2')
     .then(r => { if (!r.ok) throw new Error('Catalogue data could not be loaded.'); return r.text(); })
     .then(text => {
       state.works = parseTSV(text);
