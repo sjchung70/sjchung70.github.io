@@ -13,6 +13,16 @@
     ['Tenor', /tenor/i], ['Baritone', /baritone/i], ['Choir', /choir/i]
   ];
 
+  // Movement labels are kept at the work level so multi-movement pieces
+  // remain a single catalogue entry. When a "tracks" column is added to
+  // works.tsv, the same UI will automatically show an audio player per track.
+  const movementMap = {
+    'Chamber Mutation for Large Ensemble': ['I', 'II', 'III', 'IV'],
+    'The Change of Time for Large Ensemble': ['I', 'II', 'III', 'IV', 'V'],
+    'The Sorrow of the Lost II for String Trio': ['I', 'II', 'III'],
+    'Three Songs for Mezzo Soprano and 9 Instrumentalists': ['I', 'II', 'III']
+  };
+
   const state = { works: [], view: 'genre', genre: 'All', instrument: 'All', query: '' };
   const els = {
     list: document.getElementById('worksCatalogue'),
@@ -34,8 +44,19 @@
       item.id = index + 1;
       item.year = item.year ? Number(item.year) : null;
       item.instruments = getInstruments(item.instrumentation);
+      item.tracks = parseTracks(item.tracks, item.title);
       return item;
     });
+  }
+
+  function parseTracks(value = '', title = '') {
+    const listedTracks = value.split(';').map(entry => {
+      const [label = '', source = ''] = entry.split('|').map(part => part.trim());
+      return label ? { label, source } : null;
+    }).filter(Boolean);
+
+    if (listedTracks.length) return listedTracks;
+    return (movementMap[title] || []).map(label => ({ label, source: '' }));
   }
 
   function getInstruments(text = '') {
@@ -83,6 +104,23 @@
     }
   }
 
+  function tracksMarkup(tracks = []) {
+    if (!tracks.length) return '';
+
+    return `<div class="movement-block">
+      <p class="movement-heading">Movements</p>
+      <ol class="movement-list">
+        ${tracks.map(track => {
+          const source = safeURL(track.source);
+          return `<li class="movement-item">
+            <span class="movement-label">${escapeHTML(track.label)}</span>
+            ${source ? `<audio controls preload="none" controlslist="nodownload" src="${escapeHTML(source)}">Your browser does not support audio playback.</audio>` : ''}
+          </li>`;
+        }).join('')}
+      </ol>
+    </div>`;
+  }
+
   function workMarkup(work) {
     const meta = [
       work.instrumentation,
@@ -100,6 +138,7 @@
       <div class="catalogue-main">
         <h4>${escapeHTML(work.title)}</h4>
         ${meta.length ? `<p>${meta.join(' · ')}</p>` : ''}
+        ${tracksMarkup(work.tracks)}
       </div>
       <div class="catalogue-genre">${escapeHTML(work.genre)}</div>
     </article>`;
@@ -148,7 +187,7 @@
     render();
   }));
 
-  fetch('data/works.tsv?v=20260831-2')
+  fetch('data/works.tsv?v=20260901-1')
     .then(r => { if (!r.ok) throw new Error('Catalogue data could not be loaded.'); return r.text(); })
     .then(text => {
       state.works = parseTSV(text);
