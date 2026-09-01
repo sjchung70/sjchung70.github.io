@@ -13,14 +13,43 @@
     ['Tenor', /tenor/i], ['Baritone', /baritone/i], ['Choir', /choir/i]
   ];
 
-  // Movement labels are kept at the work level so multi-movement pieces
-  // remain a single catalogue entry. When a "tracks" column is added to
-  // works.tsv, the same UI will automatically show an audio player per track.
+  // These paths match the MP3 filenames supplied for the website. Once the
+  // files are present in /audio, the players work without any further edits.
+  const singleAudioMap = {
+    'Adieu for Two Pianos': 'audio/Adieu-for-Two-Pianos.mp3',
+    'Airs I for Flute and Piano': 'audio/Airs-for-Flute-and-Piano.mp3',
+    'Arirang Fantasy for Clarinet Quintet': 'audio/Arirang-Fantasy-for-Clarinet-Quintet.mp3',
+    'Chamber Symphony': 'audio/Chamber-Symphony.mp3',
+    'Light Off for Piano and Strings': 'audio/Light-Off-for-Piano-and Strings.mp3',
+    'Pungryu for Danso, Hoon, Yanggeum, and Jangu': 'audio/Pungryu.mp3'
+  };
+
+  // Multi-movement works stay as a single catalogue entry, with one track per
+  // movement. Empty sources mean that movement audio has not yet been supplied.
   const movementMap = {
-    'Chamber Mutation for Large Ensemble': ['I', 'II', 'III', 'IV'],
-    'The Change of Time for Large Ensemble': ['I', 'II', 'III', 'IV', 'V'],
-    'The Sorrow of the Lost II for String Trio': ['I', 'II', 'III'],
-    'Three Songs for Mezzo Soprano and 9 Instrumentalists': ['I', 'II', 'III']
+    'Chamber Mutation for Large Ensemble': [
+      { label: 'I', source: 'audio/Chamber-Mutation-I.mp3' },
+      { label: 'II', source: 'audio/Chamber-Mutation-II.mp3' },
+      { label: 'III', source: 'audio/Chamber-Mutation-III.mp3' },
+      { label: 'IV', source: 'audio/Chamber-Mutation-IV.mp3' }
+    ],
+    'The Change of Time for Large Ensemble': [
+      { label: 'I', source: 'audio/The-Change-of-TIme-I.mp3' },
+      { label: 'II', source: 'audio/The-Change-of-TIme-II.mp3' },
+      { label: 'III', source: 'audio/The-Change-of-TIme-III.mp3' },
+      { label: 'IV', source: 'audio/The-Change-of-TIme-IV.mp3' },
+      { label: 'V', source: 'audio/The-Change-of-TIme-V.mp3' }
+    ],
+    'The Sorrow of the Lost II for String Trio': [
+      { label: 'I', source: 'audio/The-Sorrow-of-the-Lost-for-String-Trio-I.mp3' },
+      { label: 'II', source: 'audio/The-Sorrow-of-the-Lost-for-String-Trio-II.mp3' },
+      { label: 'III', source: 'audio/The-Sorrow-of-the-Lost-for-String-Trio-III.mp3' }
+    ],
+    'Three Songs for Mezzo Soprano and 9 Instrumentalists': [
+      { label: 'I', source: 'audio/Three-Songs-for-Mezzo-Soprano-and-Nine-Playes-1st-Mov.mp3' },
+      { label: 'II', source: '' },
+      { label: 'III', source: '' }
+    ]
   };
 
   const state = { works: [], view: 'genre', genre: 'All', instrument: 'All', query: '' };
@@ -45,6 +74,7 @@
       item.year = item.year ? Number(item.year) : null;
       item.instruments = getInstruments(item.instrumentation);
       item.tracks = parseTracks(item.tracks, item.title);
+      item.audio = item.audio || singleAudioMap[item.title] || '';
       return item;
     });
   }
@@ -56,7 +86,7 @@
     }).filter(Boolean);
 
     if (listedTracks.length) return listedTracks;
-    return (movementMap[title] || []).map(label => ({ label, source: '' }));
+    return movementMap[title] || [];
   }
 
   function getInstruments(text = '') {
@@ -104,6 +134,15 @@
     }
   }
 
+  function audioMarkup(source = '', label = 'Recording') {
+    const url = safeURL(source);
+    if (!url) return '';
+    return `<div class="single-audio">
+      <span class="audio-label">${escapeHTML(label)}</span>
+      <audio controls preload="none" controlslist="nodownload" src="${escapeHTML(url)}">Your browser does not support audio playback.</audio>
+    </div>`;
+  }
+
   function tracksMarkup(tracks = []) {
     if (!tracks.length) return '';
 
@@ -114,7 +153,7 @@
           const source = safeURL(track.source);
           return `<li class="movement-item">
             <span class="movement-label">${escapeHTML(track.label)}</span>
-            ${source ? `<audio controls preload="none" controlslist="nodownload" src="${escapeHTML(source)}">Your browser does not support audio playback.</audio>` : ''}
+            ${source ? `<audio controls preload="none" controlslist="nodownload" src="${escapeHTML(source)}">Your browser does not support audio playback.</audio>` : '<span class="movement-unavailable">Audio not yet available</span>'}
           </li>`;
         }).join('')}
       </ol>
@@ -138,6 +177,7 @@
       <div class="catalogue-main">
         <h4>${escapeHTML(work.title)}</h4>
         ${meta.length ? `<p>${meta.join(' · ')}</p>` : ''}
+        ${audioMarkup(work.audio)}
         ${tracksMarkup(work.tracks)}
       </div>
       <div class="catalogue-genre">${escapeHTML(work.genre)}</div>
@@ -187,7 +227,7 @@
     render();
   }));
 
-  fetch('data/works.tsv?v=20260901-1')
+  fetch('data/works.tsv?v=20260901-2')
     .then(r => { if (!r.ok) throw new Error('Catalogue data could not be loaded.'); return r.text(); })
     .then(text => {
       state.works = parseTSV(text);
