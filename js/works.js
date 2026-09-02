@@ -263,6 +263,17 @@
     }).filter(item => item.title);
   }
 
+  function mergeMissingUrls(primaryWorks, fallbackWorks) {
+    const urlsByTitle = new Map();
+    fallbackWorks.forEach(work => {
+      if (work.url) urlsByTitle.set(normalizeTitle(work.title), work.url);
+    });
+    return primaryWorks.map(work => ({
+      ...work,
+      url: work.url || urlsByTitle.get(normalizeTitle(work.title)) || ''
+    }));
+  }
+
   function populateFilters() {
     while (els.genre.options.length > 1) els.genre.remove(1);
     while (els.instrument.options.length > 1) els.instrument.remove(1);
@@ -403,11 +414,16 @@
   async function loadCatalogue() {
     try {
       await loadSheetJS();
-      const response = await fetch(`${EXCEL_PATH}?v=${Date.now()}`, { cache: 'no-store' });
-      if (!response.ok) throw new Error('Excel catalogue could not be loaded.');
-      const buffer = await response.arrayBuffer();
+      const [excelResponse, tsvResponse] = await Promise.all([
+        fetch(`${EXCEL_PATH}?v=${Date.now()}`, { cache: 'no-store' }),
+        fetch(`data/works.tsv?v=${Date.now()}`, { cache: 'no-store' })
+      ]);
+      if (!excelResponse.ok) throw new Error('Excel catalogue could not be loaded.');
+      const buffer = await excelResponse.arrayBuffer();
       const workbook = XLSX.read(buffer, { type: 'array', cellLinks: true });
-      applyWorks(parseWorkbook(workbook));
+      const excelWorks = parseWorkbook(workbook);
+      const fallbackWorks = tsvResponse.ok ? parseTSV(await tsvResponse.text()) : [];
+      applyWorks(mergeMissingUrls(excelWorks, fallbackWorks));
     } catch (excelError) {
       console.warn('Falling back to TSV catalogue:', excelError);
       try {
