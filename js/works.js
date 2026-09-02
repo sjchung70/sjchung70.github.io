@@ -134,4 +134,9 @@
     if (catalogue) catalogue.innerHTML = '<p class="works-empty">The works catalogue is temporarily unavailable.</p>';
   };
   document.head.appendChild(core);
+
+  const mediaScript = document.createElement('script');
+  mediaScript.src = 'js/media.js?v=20260902-1';
+  mediaScript.defer = true;
+  document.head.appendChild(mediaScript);
 })();
