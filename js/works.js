@@ -1,6 +1,7 @@
 (() => {
   const EXCEL_PATH = 'data/List%20of%20Works_CHUNG%20Seung%20Jae%202.xlsx';
   const SHEETJS_URL = 'https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js';
+  const SUPABASE_AUDIO_BASE = 'https://lyiiafoexgsbkgrvlwjz.supabase.co/storage/v1/object/public/audio';
   const genreOrder = ['Orchestra', 'Chamber', 'Solo', 'Vocal', 'Choir', 'Other'];
 
   const instrumentRules = [
@@ -63,8 +64,16 @@
       test: title => normalizeTitle(title).includes('threesongsformezzosoprano'),
       tracks: [
         { label: 'I', source: 'audio/Three-Songs-for-Mezzo-Soprano-and-Nine-Playes-1st-Mov.mp3' },
-        { label: 'II', source: '' },
-        { label: 'III', source: '' }
+        { label: 'II', source: 'audio/Three-Songs-for-Mezzo-Soprano-and-Nine-Playes-2nd-Mov.mp3' },
+        { label: 'III', source: 'audio/Three-Songs-for-Mezzo-Soprano-and-Nine-Playes-3rd-Mov.mp3' }
+      ]
+    },
+    {
+      test: title => normalizeTitle(title) === normalizeTitle('Vertical Mutation for 8 Instrumentalists'),
+      tracks: [
+        { label: 'I', source: 'audio/Vertical-Mutation-1st Mov..mp3' },
+        { label: 'II', source: 'audio/Vertical-Mutation-2nd Mov..mp3' },
+        { label: 'III', source: 'audio/Vertical-Mutation-3rd Mov..mp3' }
       ]
     }
   ];
@@ -137,6 +146,9 @@
     if (t === normalizeTitle('Chamber Symphony')) return 'audio/Chamber-Symphony.mp3';
     if (t === normalizeTitle('Light Off for Piano and Strings')) return 'audio/Light-Off-for-Piano-and Strings.mp3';
     if (t.startsWith(normalizeTitle('Pungryu'))) return 'audio/Pungryu.mp3';
+    if (t === normalizeTitle('Untitleds; Silence Is So Accurate for Viola and Piano') || t === normalizeTitle('Untitleds for Viola and Piano')) return 'audio/Untitleds-for-Viola-and-Piano.mp3';
+    if (t === normalizeTitle('Well-tempered Quartet for Strings')) return 'audio/Well-tempered-Quartet-for-Strings.mp3';
+    if (t === normalizeTitle('Yu-Sahng for Piano Four Hands') || t === normalizeTitle('Yu-Sahng for Four Hands Piano')) return 'audio/Yu-Sahng-for-Four-Hands-Piano.mp3';
     return '';
   }
 
@@ -273,6 +285,16 @@
     return [...works].sort((a, b) => (b.year || 0) - (a.year || 0) || a.title.localeCompare(b.title));
   }
 
+  function resolveAudioSource(source = '') {
+    const value = String(source || '').trim();
+    if (!value) return '';
+    if (/^audio\//i.test(value)) {
+      const filename = value.replace(/^audio\//i, '');
+      return `${SUPABASE_AUDIO_BASE}/${encodeURIComponent(filename)}`;
+    }
+    return value;
+  }
+
   function safeURL(value = '') {
     if (!value) return '';
     try {
@@ -284,7 +306,7 @@
   }
 
   function audioMarkup(source = '', label = 'Recording') {
-    const url = safeURL(source);
+    const url = safeURL(resolveAudioSource(source));
     if (!url) return '';
     return `<div class="single-audio">
       <span class="audio-label">${escapeHTML(label)}</span>
@@ -298,7 +320,7 @@
       <p class="movement-heading">Movements</p>
       <ol class="movement-list">
         ${tracks.map(track => {
-          const source = safeURL(track.source);
+          const source = safeURL(resolveAudioSource(track.source));
           return `<li class="movement-item">
             <span class="movement-label">${escapeHTML(track.label)}</span>
             ${source ? `<audio controls preload="none" controlslist="nodownload" src="${escapeHTML(source)}">Your browser does not support audio playback.</audio>` : '<span class="movement-unavailable">Audio not yet available</span>'}
