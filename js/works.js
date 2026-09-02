@@ -2,20 +2,43 @@
   const CORE_SCRIPT = 'js/works-core.js?v=20260902-1';
   const AUDIO_BASE = 'https://lyiiafoexgsbkgrvlwjz.supabase.co/storage/v1/object/public/audio';
 
-  // The uploaded Excel workbook remains the source of truth, but ChatGPT converts
-  // it to data/works.tsv when updating the site. Force the catalogue core to use
-  // that freshly generated TSV instead of an older binary Excel file in GitHub.
+  // Use the current TSV catalogue, and normalize the corrected title before
+  // the catalogue core parses it. The older binary Excel file is intentionally
+  // bypassed so the site always uses the latest curated catalogue data.
   const nativeFetch = window.fetch.bind(window);
   const excelCataloguePattern = /data\/(?:List(?:%20| )of(?:%20| )Works_CHUNG(?:%20| )Seung(?:%20| )Jae(?:%20| )2\.xlsx)/i;
-  window.fetch = (input, init) => {
+  const tsvCataloguePattern = /data\/works\.tsv/i;
+  window.fetch = async (input, init) => {
     const url = typeof input === 'string' ? input : (input && input.url) ? input.url : String(input || '');
     if (excelCataloguePattern.test(url)) {
-      return Promise.resolve(new Response('', { status: 404, statusText: 'Use latest TSV catalogue' }));
+      return new Response('', { status: 404, statusText: 'Use latest TSV catalogue' });
     }
-    return nativeFetch(input, init);
+
+    const response = await nativeFetch(input, init);
+    if (tsvCataloguePattern.test(url) && response.ok) {
+      const text = (await response.text()).replace(
+        'Three Korean Folk Melodies for PIano\t2026\tSolo\tPiano\t7\'',
+        'Two Korean Melodies\t2026\tSolo\tPiano\t7\''
+      );
+      return new Response(text, {
+        status: response.status,
+        statusText: response.statusText,
+        headers: { 'Content-Type': 'text/tab-separated-values; charset=utf-8' }
+      });
+    }
+    return response;
   };
 
   const extraTrackRules = [
+    {
+      key: 'two-korean-melodies',
+      test: title => normalizeTitle(title) === normalizeTitle('Two Korean Melodies'),
+      heading: 'Movements',
+      tracks: [
+        ['I', 'Two-Korean-Melodies-1.mp3'],
+        ['II', 'Two-Korean-Melodies-2.mp3']
+      ]
+    },
     {
       key: 'lonely-outcry',
       test: title => {
@@ -164,7 +187,7 @@
   document.head.appendChild(core);
 
   const mediaScript = document.createElement('script');
-  mediaScript.src = 'js/media.js?v=20260902-2';
+  mediaScript.src = 'js/media.js?v=20260902-3';
   mediaScript.defer = true;
   document.head.appendChild(mediaScript);
 })();
