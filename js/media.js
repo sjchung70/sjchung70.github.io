@@ -15,7 +15,10 @@
     {
       title: 'Two Korean Melodies',
       meta: 'Selected work',
-      pending: 'Media forthcoming'
+      tracks: [
+        ['I', 'Two-Korean-Folk Melodies-1.mp3'],
+        ['II', 'Two-Korean-Folk-Melodies-2.mp3']
+      ]
     },
     {
       title: 'Scattered Air I',
