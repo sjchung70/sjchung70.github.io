@@ -86,4 +86,9 @@
     <p class="lead media-intro">Selected recordings and performances representing different periods and facets of CHUNG Seung Jae’s musical work.</p>
     <div class="media-grid">${cards.map(cardMarkup).join('')}</div>
     <div class="media-footer"><a class="media-youtube" href="https://www.youtube.com/@sjchung70" target="_blank" rel="noopener noreferrer">More performances on YouTube ↗</a></div>`;
+
+  const eventsScript = document.createElement('script');
+  eventsScript.src = 'js/events.js?v=20260902-1';
+  eventsScript.defer = true;
+  document.head.appendChild(eventsScript);
 })();
