@@ -62,6 +62,34 @@
       key: 'rage',
       test: title => normalizeTitle(title).startsWith(normalizeTitle('Rage')),
       filename: 'Rage.mp3'
+    },
+    {
+      key: 'farewell-choir',
+      test: title => normalizeTitle(title).startsWith(normalizeTitle('Farewell')) && normalizeTitle(title).includes('choir'),
+      filename: 'Farewell-for-Choir.mp3'
+    },
+    {
+      key: 'das-hohepriesterliche-gebet-a-cappella',
+      test: title => {
+        const t = normalizeTitle(title);
+        return t.includes('dash ohepriesterlichegebet'.replace(/ /g, '')) && t.includes('cappella');
+      },
+      filename: 'Das-Hohepriesterliche-Gebet.mp3'
+    },
+    {
+      key: 'delayed-illusion',
+      test: title => normalizeTitle(title).startsWith(normalizeTitle('Delayed Illusion')),
+      filename: 'Delayed-Illusion.mp3'
+    },
+    {
+      key: 'divertimento-winds',
+      test: title => normalizeTitle(title).startsWith(normalizeTitle('Divertimento')) && normalizeTitle(title).includes('wind'),
+      filename: 'Divertimento-for-Wind-Instruments.mp3'
+    },
+    {
+      key: 'terra-decorus',
+      test: title => normalizeTitle(title).startsWith(normalizeTitle('Terra Decorus')),
+      filename: 'Terra-Decorus.mp3'
     }
   ];
 
