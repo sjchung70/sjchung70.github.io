@@ -14,10 +14,10 @@
   const cards = [
     {
       title: 'Two Korean Melodies',
-      meta: 'Selected work',
+      meta: 'for Piano · 2026',
       tracks: [
-        ['I', 'Two-Korean-Folk Melodies-1.mp3'],
-        ['II', 'Two-Korean-Folk-Melodies-2.mp3']
+        ['I', 'Two-Korean-Melodies-1.mp3'],
+        ['II', 'Two-Korean-Melodies-2.mp3']
       ]
     },
     {
