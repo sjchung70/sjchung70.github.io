@@ -40,6 +40,17 @@
       ]
     },
     {
+      key: 'childrens-suite',
+      test: title => normalizeTitle(title) === normalizeTitle("Children's Suite for Piano Solo"),
+      heading: 'Movements',
+      tracks: [
+        ['I', "Children's Corner-I.mp3"],
+        ['II', "Children's Corner-II.mp3"],
+        ['III', "Children's Corner-III.mp3"],
+        ['IV', "Children's Corner-IV.mp3"]
+      ]
+    },
+    {
       key: 'lonely-outcry',
       test: title => {
         const t = normalizeTitle(title);
