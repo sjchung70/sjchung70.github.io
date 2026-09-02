@@ -47,6 +47,24 @@
     }
   ];
 
+  const extraSingleRules = [
+    {
+      key: 'autumn-letter',
+      test: title => normalizeTitle(title).startsWith(normalizeTitle('Autumn Letter')),
+      filename: 'Autumn Letter.mp3'
+    },
+    {
+      key: 'namul-norae',
+      test: title => normalizeTitle(title).startsWith(normalizeTitle('Namul Norae')),
+      filename: 'Namul-Norae-for-Violin-Solo.mp3'
+    },
+    {
+      key: 'rage',
+      test: title => normalizeTitle(title).startsWith(normalizeTitle('Rage')),
+      filename: 'Rage.mp3'
+    }
+  ];
+
   function normalizeTitle(value = '') {
     return String(value).trim().toLowerCase().replace(/[^a-z0-9가-힣]/g, '');
   }
@@ -71,6 +89,13 @@
     </div>`;
   }
 
+  function singleMarkup(rule) {
+    return `<div class="single-audio" data-extra-audio="${escapeHTML(rule.key)}">
+      <span class="audio-label">Recording</span>
+      <audio controls preload="none" controlslist="nodownload" src="${escapeHTML(audioURL(rule.filename))}">Your browser does not support audio playback.</audio>
+    </div>`;
+  }
+
   function installExtraPlayers() {
     const catalogue = document.getElementById('worksCatalogue');
     if (!catalogue) return;
@@ -85,6 +110,13 @@
           if (!rule.test(title)) return;
           if (main.querySelector(`[data-extra-audio="${rule.key}"]`)) return;
           main.insertAdjacentHTML('beforeend', extraMarkup(rule));
+        });
+
+        extraSingleRules.forEach(rule => {
+          if (!rule.test(title)) return;
+          if (main.querySelector(`[data-extra-audio="${rule.key}"]`)) return;
+          if (main.querySelector('.single-audio')) return;
+          main.insertAdjacentHTML('beforeend', singleMarkup(rule));
         });
       });
     };
