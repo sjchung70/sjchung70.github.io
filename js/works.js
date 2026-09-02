@@ -2,6 +2,19 @@
   const CORE_SCRIPT = 'js/works-core.js?v=20260902-1';
   const AUDIO_BASE = 'https://lyiiafoexgsbkgrvlwjz.supabase.co/storage/v1/object/public/audio';
 
+  // The uploaded Excel workbook remains the source of truth, but ChatGPT converts
+  // it to data/works.tsv when updating the site. Force the catalogue core to use
+  // that freshly generated TSV instead of an older binary Excel file in GitHub.
+  const nativeFetch = window.fetch.bind(window);
+  const excelCataloguePattern = /data\/(?:List(?:%20| )of(?:%20| )Works_CHUNG(?:%20| )Seung(?:%20| )Jae(?:%20| )2\.xlsx)/i;
+  window.fetch = (input, init) => {
+    const url = typeof input === 'string' ? input : (input && input.url) ? input.url : String(input || '');
+    if (excelCataloguePattern.test(url)) {
+      return Promise.resolve(new Response('', { status: 404, statusText: 'Use latest TSV catalogue' }));
+    }
+    return nativeFetch(input, init);
+  };
+
   const extraTrackRules = [
     {
       key: 'lonely-outcry',
@@ -39,7 +52,7 @@
   }
 
   function escapeHTML(value = '') {
-    return String(value).replace(/[&<>'"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[c]));
+    return String(value).replace(/[&<>'\"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '\"': '&quot;' }[c]));
   }
 
   function audioURL(filename) {
