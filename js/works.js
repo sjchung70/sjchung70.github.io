@@ -103,6 +103,14 @@
       filename: 'Farewell-for-Choir.mp3'
     },
     {
+      key: 'das-hohepriesterliche-gebet-2004',
+      test: title => {
+        const t = normalizeTitle(title);
+        return t.includes('dashohepriesterlichegebet') && t.includes('stimme') && t.includes('flote');
+      },
+      filename: 'Das-hohepriestliche-Gebet-fuer-Stimme-Floete-Cembalo-und-Bratsche.mp3'
+    },
+    {
       key: 'das-hohepriesterliche-gebet-a-cappella',
       test: title => {
         const t = normalizeTitle(title);
@@ -198,7 +206,7 @@
   document.head.appendChild(core);
 
   const mediaScript = document.createElement('script');
-  mediaScript.src = 'js/media.js?v=20260902-4';
+  mediaScript.src = 'js/media.js?v=20260909-1';
   mediaScript.defer = true;
   document.head.appendChild(mediaScript);
 })();
