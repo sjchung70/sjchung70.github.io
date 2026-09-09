@@ -13,8 +13,8 @@
 
   const cards = [
     {
-      title: 'Two Korean Melodies',
-      meta: 'for Piano · 2026',
+      title: 'Two Korean Melodies for Piano Solo',
+      meta: 'for Piano · 2020',
       tracks: [
         ['I', 'Two-Korean-Melodies-1.mp3'],
         ['II', 'Two-Korean-Melodies-2.mp3']
@@ -57,11 +57,6 @@
       title: 'Chamber Symphony',
       meta: 'for Orchestra · 2014',
       audio: 'Chamber-Symphony.mp3'
-    },
-    {
-      title: 'Das hohepriesterliche Gebet',
-      meta: 'für Stimme, Flöte, Cembalo und Bratsche · 2004',
-      audio: 'Das-hohepriestliche-Gebet-fuer-Stimme-Floete-Cembalo-und-Bratsche.mp3'
     },
     {
       title: 'Das hohepriesterliche Gebet für a Cappella',
