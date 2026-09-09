@@ -16,10 +16,7 @@
 
     const response = await nativeFetch(input, init);
     if (tsvCataloguePattern.test(url) && response.ok) {
-      const text = (await response.text()).replace(
-        'Three Korean Folk Melodies for PIano\t2026\tSolo\tPiano\t7\'',
-        'Two Korean Melodies\t2026\tSolo\tPiano\t7\''
-      );
+      const text = await response.text();
       return new Response(text, {
         status: response.status,
         statusText: response.statusText,
@@ -32,7 +29,7 @@
   const extraTrackRules = [
     {
       key: 'two-korean-melodies',
-      test: title => normalizeTitle(title) === normalizeTitle('Two Korean Melodies'),
+      test: title => normalizeTitle(title).startsWith(normalizeTitle('Two Korean Melodies')),
       heading: 'Movements',
       tracks: [
         ['I', 'Two-Korean-Melodies-1.mp3'],
@@ -78,10 +75,24 @@
         ['Song III', 'In-Memoriam-Song-III-6.mp3'],
         ['Postlude', 'In-Memoriam-Postlude-7.mp3']
       ]
+    },
+    {
+      key: 'dream-soprano-viola',
+      test: title => normalizeTitle(title) === normalizeTitle('Dream for Soprano and Viola'),
+      heading: 'Movements',
+      tracks: [
+        ['I · After Awakening', 'Dream-I-After-Awakening.mp3'],
+        ['II · My Dream', 'Dream-II-My-Dream.mp3']
+      ]
     }
   ];
 
   const extraSingleRules = [
+    {
+      key: 'flight-dragonfly',
+      test: title => normalizeTitle(title) === normalizeTitle('The Flight of the Dragonfly before the Sun'),
+      filename: 'The-Flight-of-the-Dragonfly-before-the-Sun.mp3'
+    },
     {
       key: 'autumn-letter',
       test: title => normalizeTitle(title).startsWith(normalizeTitle('Autumn Letter')),
@@ -206,7 +217,7 @@
   document.head.appendChild(core);
 
   const mediaScript = document.createElement('script');
-  mediaScript.src = 'js/media.js?v=20260909-1';
+  mediaScript.src = 'js/media.js?v=20260910-1';
   mediaScript.defer = true;
   document.head.appendChild(mediaScript);
 })();
