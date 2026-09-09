@@ -59,6 +59,11 @@
       audio: 'Chamber-Symphony.mp3'
     },
     {
+      title: 'Das hohepriesterliche Gebet',
+      meta: 'für Stimme, Flöte, Cembalo und Bratsche · 2004',
+      audio: 'Das-hohepriestliche-Gebet-fuer-Stimme-Floete-Cembalo-und-Bratsche.mp3'
+    },
+    {
       title: 'Das hohepriesterliche Gebet für a Cappella',
       meta: 'for Choir · 1997',
       audio: 'Das-Hohepriesterliche-Gebet.mp3'
