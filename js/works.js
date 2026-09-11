@@ -130,6 +130,19 @@
       filename: 'Das-Hohepriesterliche-Gebet.mp3'
     },
     {
+      key: 'turning-points',
+      test: title => normalizeTitle(title) === normalizeTitle('Turning Points for Flute, Clarinet, Violin and Violoncello'),
+      filename: 'Turning-Points-for-Flute-Clarinet-Violin-and-Violoncello.mp3.mp3'
+    },
+    {
+      key: 'repetitive-mutation-ii-dialogue',
+      test: title => {
+        const t = normalizeTitle(title);
+        return t.includes('repetitivemutationii') && t.includes('flute') && t.includes('clarinet');
+      },
+      filename: 'Repetitive-Mutation-II-Dialogue-for-Flute-and-Clarinet.mp3'
+    },
+    {
       key: 'delayed-illusion',
       test: title => normalizeTitle(title).startsWith(normalizeTitle('Delayed Illusion')),
       filename: 'Delayed-Illusion.mp3'
