@@ -3,8 +3,8 @@
     root.querySelectorAll('a').forEach(link => {
       const text = (link.textContent || '').trim();
 
-      if (/^Video\s*↗?$/.test(text)) {
-        link.textContent = '▶ Video';
+      if (/^Video\s*↗?$/.test(text) || /^▶\s*Video$/.test(text)) {
+        link.textContent = 'Video ▶';
         link.classList.add('play-link');
         link.setAttribute('aria-label', 'Play video');
       }
