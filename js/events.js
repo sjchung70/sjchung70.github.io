@@ -23,12 +23,15 @@
 
   const upcomingEvents = [
     {
-      date: 'SEP 16, 2026 · 7:30 PM',
-      work: 'Scattered Air V for Clarinet, Violin, and Piano (2025)',
-      concert: 'Collage',
-      performers: 'Ensemble Between',
-      venue: 'Sejong Chamber Hall · Seoul, South Korea'
-    },
+      date: 'OCT 15, 2026 · 7:30 PM',
+      work: 'Pasqueflowers on the Back Hill for Violin Solo (2026)',
+      concert: 'Association for Perspective Music: 51st Concert of New Works',
+      performers: 'Yoon Eui Lee, violin',
+      venue: 'Seoul National University, Concert Hall (Bldg. 49) · Seoul, South Korea'
+    }
+  ];
+
+  const pastEvents = [
     {
       date: 'SEP 18, 2026 · 7:30 PM',
       work: 'Three Korean Melodies for Piano Solo (2026)',
@@ -36,6 +39,13 @@
       performers: 'Ji Hye Son, piano',
       venue: 'Art Center Incheon, Multi-Purpose Hall · Incheon, South Korea',
       premiere: 'World Premiere'
+    },
+    {
+      date: 'SEP 16, 2026 · 7:30 PM',
+      work: 'Scattered Air V for Clarinet, Violin, and Piano (2025)',
+      concert: 'Collage',
+      performers: 'Ensemble Between',
+      venue: 'Sejong Chamber Hall · Seoul, South Korea'
     }
   ];
 
@@ -67,8 +77,8 @@
 
       <details class="past-events">
         <summary>Past Performances <span aria-hidden="true">+</span></summary>
-        <div class="past-events-body">
-          <p>Past performances will be archived here as upcoming events are completed.</p>
+        <div class="past-events-body events-list">
+          ${pastEvents.map(eventMarkup).join('')}
         </div>
       </details>
     </div>`;
@@ -81,7 +91,7 @@
     teaser.innerHTML = `
       <div>
         <span class="next-performance-label">Next Performance</span>
-        <p><strong>Sep 16, 2026</strong> · <em>Scattered Air V</em> · Collage · Sejong Chamber Hall</p>
+        <p><strong>Oct 15, 2026</strong> · <em>Pasqueflowers on the Back Hill</em> · Seoul National University Concert Hall</p>
       </div>
       <a href="#events">View events →</a>`;
     heroActions.insertAdjacentElement('afterend', teaser);
