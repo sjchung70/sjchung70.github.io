@@ -25,9 +25,9 @@
     {
       date: 'OCT 15, 2026 · 7:30 PM',
       work: 'Pasqueflowers on the Back Hill for Violin Solo (2026)',
-      concert: 'Association for Perspective Music: 51st Concert of New Works',
+      concert: 'Association for Perspective Music: 51st Concert',
       performers: 'Yoon Eui Lee, violin',
-      venue: 'Seoul National University, Concert Hall (Bldg. 49) · Seoul, South Korea'
+      venue: 'Concert Hall, Arts Building, Seoul National University'
     }
   ];
 
