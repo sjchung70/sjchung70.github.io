@@ -230,7 +230,7 @@
   document.head.appendChild(core);
 
   const mediaScript = document.createElement('script');
-  mediaScript.src = 'js/media.js?v=20260910-1';
+  mediaScript.src = 'js/media.js?v=20261007-1';
   mediaScript.defer = true;
   document.head.appendChild(mediaScript);
 })();
