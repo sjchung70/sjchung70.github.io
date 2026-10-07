@@ -28,6 +28,12 @@
 
   const extraTrackRules = [
     {
+      key: 'three-korean-melodies',
+      test: title => normalizeTitle(title).startsWith(normalizeTitle('Three Korean Melodies')),
+      heading: 'Movements',
+      tracks: [["I · Roll Along, Roll Along","Three-Korean-Melodies-I. Roll Along, Roll Along.mp3"],["II · Dungdangae Taryeong","Three-Korean-Melodies-II. Dungdangae Taryeong.mp3"],["III · Nimble Feet and Skillful Hands","Three-Korean-Melodies-III. Nimble Feet and Skillful Hands.mp3"]]
+    },
+    {
       key: 'two-korean-melodies',
       test: title => normalizeTitle(title).startsWith(normalizeTitle('Two Korean Melodies')),
       heading: 'Movements',
