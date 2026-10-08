@@ -27,7 +27,15 @@
       work: 'Pasqueflowers on the Back Hill for Violin Solo (2026)',
       concert: 'Association for Perspective Music: 51st Concert',
       performers: 'Yoon Eui Lee, violin',
-      venue: 'Concert Hall, Arts Building, Seoul National University'
+      venue: 'Concert Hall, Arts Building, Seoul National University',
+      premiere: 'World Premiere'
+    },
+    {
+      date: 'Date to be announced',
+      work: 'Common Songs for Violoncello Solo (2023)',
+      concert: 'Baroque to Contemporary Music III',
+      performers: 'Min Ji Choi, Violoncello',
+      venue: 'Art Center Incheon, Multi-Purpose Hall · Incheon, South Korea'
     }
   ];
 
