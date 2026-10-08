@@ -31,7 +31,7 @@
       premiere: 'World Premiere'
     },
     {
-      date: 'Date to be announced',
+      date: 'DEC 16, 2026 · 7:30 PM',
       work: 'Common Songs for Violoncello Solo (2023)',
       concert: 'Baroque to Contemporary Music III',
       performers: 'Min Ji Choi, Violoncello',
