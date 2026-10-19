@@ -14,7 +14,7 @@
       return new Response('', { status: 404, statusText: 'Use latest TSV catalogue' });
     }
 
-    const response = await nativeFetch(input, init);
+    const response = await nativeFetch(tsvCataloguePattern.test(url) ? 'data/works.tsv?v=20261019-1' : input, init);
     if (tsvCataloguePattern.test(url) && response.ok) {
       const text = await response.text();
       return new Response(text, {
@@ -94,6 +94,11 @@
   ];
 
   const extraSingleRules = [
+    {
+      key: 'pasqueflowers-back-hill',
+      test: title => normalizeTitle(title) === normalizeTitle('Pasqueflowers on the Back Hill'),
+      filename: 'Pasqueflowers-on-the-Back-Hill.mp3'
+    },
     {
       key: 'flight-dragonfly',
       test: title => normalizeTitle(title) === normalizeTitle('The Flight of the Dragonfly before the Sun'),
