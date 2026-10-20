@@ -88,7 +88,7 @@
     <div class="media-footer"><a class="media-youtube" href="https://www.youtube.com/@sjchung70" target="_blank" rel="noopener noreferrer">More performances on YouTube ↗</a></div>`;
 
   const eventsScript = document.createElement('script');
-  eventsScript.src = 'js/events.js?v=20261008-2';
+  eventsScript.src = 'js/events.js?v=20261020-1';
   eventsScript.defer = true;
   document.head.appendChild(eventsScript);
 })();
