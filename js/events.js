@@ -21,8 +21,9 @@
   const contactNumber = contact.querySelector('.section-number');
   if (contactNumber) contactNumber.textContent = '05';
 
-  const upcomingEvents = [
+  const allEvents = [
     {
+      day: '2026-10-15',
       date: 'OCT 15, 2026 · 7:30 PM',
       work: 'Pasqueflowers on the Back Hill for Violin Solo (2026)',
       concert: 'Association for Perspective Music: 51st Concert',
@@ -31,16 +32,16 @@
       premiere: 'World Premiere'
     },
     {
+      day: '2026-12-16',
       date: 'DEC 16, 2026 · 7:30 PM',
       work: 'Common Songs for Violoncello Solo (2023)',
       concert: 'Baroque to Contemporary Music III',
       performers: 'Min Ji Choi, Violoncello',
       venue: 'Art Center Incheon, Multi-Purpose Hall · Incheon, South Korea'
     }
-  ];
-
-  const pastEvents = [
+,
     {
+      day: '2026-09-18',
       date: 'SEP 18, 2026 · 7:30 PM',
       work: 'Three Korean Melodies for Piano Solo (2026)',
       concert: 'Baroque to Contemporary Music II',
@@ -49,6 +50,7 @@
       premiere: 'World Premiere'
     },
     {
+      day: '2026-09-16',
       date: 'SEP 16, 2026 · 7:30 PM',
       work: 'Scattered Air V for Clarinet, Violin, and Piano (2025)',
       concert: 'Collage',
@@ -56,6 +58,15 @@
       venue: 'Sejong Chamber Hall · Seoul, South Korea'
     }
   ];
+
+  // Keep performances on their concert day; archive them the next day in Seoul.
+  const today = new Intl.DateTimeFormat('en-CA', {
+    timeZone: 'Asia/Seoul', year: 'numeric', month: '2-digit', day: '2-digit'
+  }).format(new Date());
+  const upcomingEvents = allEvents.filter(event => event.day >= today)
+    .sort((a, b) => a.day.localeCompare(b.day));
+  const pastEvents = allEvents.filter(event => event.day < today)
+    .sort((a, b) => b.day.localeCompare(a.day));
 
   const eventMarkup = event => `
     <article class="event-card">
@@ -80,7 +91,7 @@
       <p class="lead events-intro">Upcoming performances of works by CHUNG Seung Jae.</p>
 
       <div class="events-list" aria-live="polite">
-        ${upcomingEvents.map(eventMarkup).join('')}
+        ${upcomingEvents.length ? upcomingEvents.map(eventMarkup).join('') : '<p>No upcoming performances announced.</p>'}
       </div>
 
       <details class="past-events">
@@ -93,13 +104,14 @@
   contact.parentNode.insertBefore(events, contact);
 
   const heroActions = document.querySelector('.hero-actions');
-  if (heroActions && !document.querySelector('.next-performance')) {
+  const nextEvent = upcomingEvents[0];
+  if (heroActions && nextEvent && !document.querySelector('.next-performance')) {
     const teaser = document.createElement('div');
     teaser.className = 'next-performance';
     teaser.innerHTML = `
       <div>
         <span class="next-performance-label">Next Performance</span>
-        <p><strong>Oct 15, 2026</strong> · <em>Pasqueflowers on the Back Hill</em> · Seoul National University Concert Hall</p>
+        <p><strong>${nextEvent.date}</strong> · <em>${nextEvent.work}</em> · ${nextEvent.venue}</p>
       </div>
       <a href="#events">View events →</a>`;
     heroActions.insertAdjacentElement('afterend', teaser);
